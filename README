@@ -1,0 +1,11 @@
+Hermodur
+========
+
+Introduction
+------------
+
+AMQP/WebSocket handler for Tornado web server. The purpose of the handler is to forward messages from an AMQP server to a client connected to the Tornado server via a WebSocket.
+
+How to use
+----------
+... coming soon ...
