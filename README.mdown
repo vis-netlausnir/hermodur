@@ -6,6 +6,32 @@ Introduction
 
 AMQP/WebSocket handler for Tornado web server. The purpose of the handler is to forward messages from an AMQP server to a client connected to the Tornado server via a WebSocket.
 
+Installation
+------------
+There are two ways to install hermodur onto your system
+
+```
+# old school - setup tools
+python setup.py
+
+# new way - using pip
+pip install http://github.com/vis-netlausnir/hermodur/tarball/master
+```
+
 How to use
 ----------
-... coming soon ...
+In order to load the AMQPHandler into the Tornado ioloop it has to be configured. To do this put this somewhere in your Tornado server configuration.
+
+```python
+define("amqp_host", default="localhost", help="AMQP Server Address")
+define("amqp_port", default=5672, help="AMPQ Server Port", type=int)
+define("amqp_username", default="guest", help="AMQP username")
+define("amqp_password", default="guest", help="AMQP password")
+define("amqp_vhost", default="/", help="AMQP virtual host")
+```
+
+Then in order to properly start the handler put this somwhere before the IOLoop.instance().start() call.
+
+```python
+AMQPHandler.setup_connection()
+```
