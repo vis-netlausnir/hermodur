@@ -11,9 +11,9 @@ setup(
     packages=['hermodur'],
     zip_safe=False,
     platforms='any',
+    dependency_links = ['http://github.com/paolo-losi/stormed-amqp/tarball/master'],
     install_requires=[
         'distribute>=0.6.19',
-        'stormed-amqp>=0.1',
         'tornado'
     ],
     classifiers=[
