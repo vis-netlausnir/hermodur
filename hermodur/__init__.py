@@ -10,7 +10,7 @@ class AMQPHandler(tornado.websocket.WebSocketHandler):
 
     channel = None
     logger = logging.getLogger('amqp_handler')
-    
+
     @classmethod
     def setup_connection(cls):
         cls.connection = Connection(
@@ -32,7 +32,7 @@ class AMQPHandler(tornado.websocket.WebSocketHandler):
             self.channel.queue_declare(exclusive=True, callback=self.on_queue_declare)
         else:
             raise RuntimeError("AMQP channel not established")
-    
+
     def on_amqp_message(self, msg):
         self.logger.info(
             "AMQP got message '%r' for '%r'" %\
@@ -42,7 +42,7 @@ class AMQPHandler(tornado.websocket.WebSocketHandler):
             self.write_message("%s,%s" % (msg.rx_data.routing_key, msg.body))
         except:
             self.close()
-    
+
     def on_queue_declare(self, qinfo):
         self.logger.info("AMQP queue declared %r" % qinfo.queue)
         self.qinfo = qinfo
@@ -69,6 +69,6 @@ class AMQPHandler(tornado.websocket.WebSocketHandler):
             self.close()
 
     def on_close(self):
-        if self.channel and self.qinfo:
+        if self.channel:
             self.channel.queue_delete(self.qinfo.queue)
         self.logger.info("WebSocket connection closed to %s" % self.request.remote_ip)
