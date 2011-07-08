@@ -19,12 +19,12 @@ class AMQPHandler(tornado.websocket.WebSocketHandler):
             username=options.amqp_username,
             password=options.amqp_password,
             vhost=options.amqp_vhost)
-        cls.connection.connect(self.on_connect)
+        cls.connection.connect(cls.on_connect)
 
     @classmethod
-    def on_connect(self):
-        self.logger.info("AMQP connection established")
-        self.channel = self.connection.channel()
+    def on_connect(cls):
+        cls.logger.info("AMQP connection established")
+        cls.channel = cls.connection.channel()
 
     def open(self):
         self.logger.info("WebSocket connection opened from %s" % self.request.remote_ip)
