@@ -23,9 +23,11 @@ pip install http://github.com/vis-netlausnir/hermodur/tarball/master
 
 How to use
 ----------
-In order to load the HermodurConnection into the Tornado ioloop it has to be configured and the connection the AMQP server has to be initiated. To do this put this somewhere in your Tornado server configuration.
+In order to load the HermodurConnection into the Tornado ioloop it has to be configured and the connection the AMQP server has to be initiated. Below is a small example
 
 ```python
+import tornadio
+import tornadio.server
 from hermodur import HermodurConnection
 
 # Use the routes classmethod to build the correct resource
@@ -43,3 +45,14 @@ application = tornado.web.Application(
 if __name__ == "__main__":
     tornadio.server.SocketServer(application)
 ```
+
+The client then connects using a socket.io client and a connection method
+supported by the client's browser. When the connection to the server is
+established the client simply send a JSON message containing the desired
+exchange and routing_key.
+
+```javascript
+{ "exchange": "my_exchange", "routing_key": "my_routing_key" }
+```
+
+A more detailed example will be added soon ...
