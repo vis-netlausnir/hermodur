@@ -4,7 +4,10 @@ Hermodur
 Introduction
 ------------
 
-AMQP/WebSocket handler for Tornado web server. The purpose of the handler is to forward messages from an AMQP server to a client connected to the Tornado server via a WebSocket.
+AMQP/WebSocket handler for Tornado web server. The purpose of Hermodur is to forward messages from an AMQP server to a client connected to the Tornado server via a socket.io server. The main benefits of this are two:
+
+* Only one connection is opened to the AMQP server (a single instance of RabbitMQ supports rougly 800)
+* Since the listener is a socket.io server it enables older browsers that do not have WebSocket implemented to connect.
 
 Installation
 ------------
@@ -20,18 +23,23 @@ pip install http://github.com/vis-netlausnir/hermodur/tarball/master
 
 How to use
 ----------
-In order to load the AMQPHandler into the Tornado ioloop it has to be configured. To do this put this somewhere in your Tornado server configuration.
+In order to load the HermodurConnection into the Tornado ioloop it has to be configured and the connection the AMQP server has to be initiated. To do this put this somewhere in your Tornado server configuration.
 
 ```python
-define("amqp_host", default="localhost", help="AMQP Server Address")
-define("amqp_port", default=5672, help="AMPQ Server Port", type=int)
-define("amqp_username", default="guest", help="AMQP username")
-define("amqp_password", default="guest", help="AMQP password")
-define("amqp_vhost", default="/", help="AMQP virtual host")
-```
+from hermodur import HermodurConnection
 
-Then in order to properly start the handler put this somwhere before the IOLoop.instance().start() call.
+# Use the routes classmethod to build the correct resource
+HermodurRouter = tornadio.get_router(HermodurConnection)
 
-```python
-AMQPHandler.setup_connection()
+# We use the defaults localhost:5672 and guest:guest on vhost '/'
+HermodurConnection.setup_connection()
+
+# configure the Tornado application
+application = tornado.web.Application(
+    [HermodurRouter.route()],
+    socket_io_port = 8001
+)
+
+if __name__ == "__main__":
+    tornadio.server.SocketServer(application)
 ```
