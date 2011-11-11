@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Hermodur',
-    version='0.0.2',
+    version='0.0.3',
     url="http://github.com/vis-netlausnir/hermodur/",
     license="BSD",
     author="Bjarki Gudlaugsson",
@@ -12,13 +12,14 @@ setup(
     zip_safe=False,
     platforms='any',
     dependency_links = [
-        'http://github.com/paolo-losi/stormed-amqp/tarball/master#StormedAMQP-dev',
-        'http://github.com/mrjoes/tornadio/tarball/master#egg=TornadIO-dev'
+        'https://github.com/vis-netlausnir/stormed-amqp/tarball/master#egg=stormed-amqp-0.1.1',
+        'https://github.com/vis-netlausnir/tornadio2/tarball/master#egg=TornadIO2-0.0.1'
     ],
     install_requires=[
         'distribute>=0.6.19',
-        'tornadio==dev',
-        'stormed-amqp==dev',
+		'simplejson',
+        'tornadio2==0.0.1',
+        'stormed_amqp==0.1.1',
         'tornado'
     ],
     classifiers=[

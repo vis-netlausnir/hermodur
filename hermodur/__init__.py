@@ -1,27 +1,36 @@
 import logging
-import tornado
-import tornadio
-import tornadio.server
+
+from os import path as op
+
+from tornadio2 import SocketConnection
 
 from stormed import Connection
 
 
-class HermodurConnection(tornadio.SocketConnection):
-    
+ROOT = op.normpath(op.dirname(__file__))
+
+logging.getLogger().setLevel(logging.DEBUG)
+
+
+class HermodurConnection(SocketConnection):
+
     # Class level variable
     channel = None
     connection = None
 
     @classmethod
-    def setup_connection(cls, host, port, username, password, vhost):
+    def setup_connection(cls, host='localhost', port=5672, username='guest', password='guest', vhost='/'):
         """Sets up the connection to the AMQP host."""
+        logging.debug('Setting up connection')
         cls.connection = Connection(
             host=host,
             port=port,
             username=username,
             password=password,
             vhost=vhost)
+        logging.debug('Making the connection')
         cls.connection.connect(cls.on_connect)
+        logging.debug('Connection made')
 
     @classmethod
     def on_connect(cls):
